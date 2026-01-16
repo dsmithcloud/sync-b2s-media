@@ -90,6 +90,8 @@ Run the script manually to sync files:
 
 ### Automated Sync
 
+#### Option 1: Cron Job (Linux/macOS)
+
 Set up a cron job to run the sync automatically. Edit your crontab:
 
 ```bash
@@ -104,6 +106,51 @@ Add a line to run the sync every hour:
 Or every 30 minutes:
 ```bash
 */30 * * * * /path/to/sync-b2s-media/bambu-sync.sh
+```
+
+#### Option 2: macOS LaunchAgent (Recommended for macOS)
+
+For macOS users, we provide a convenient setup script that creates a LaunchAgent for more reliable background execution:
+
+1. **Configure the setup script:**
+   Edit the `create-launchd-userjob.sh` file and update the configuration variables at the top:
+   ```bash
+   PRINTER_IP="192.168.1.50"        # Your P2S IP
+   ACCESS_CODE="YOUR_ACCESS_CODE"   # Your printer access code
+   REMOTE_DIR="/usb/timelapse"      # Remote timelapse folder
+   LOCAL_DIR="$HOME/bambu-timelapse"
+   ```
+
+2. **Make the setup script executable:**
+   ```bash
+   chmod +x create-launchd-userjob.sh
+   ```
+
+3. **Run the setup script:**
+   ```bash
+   ./create-launchd-userjob.sh
+   ```
+
+This script will:
+- Create a sync script at `~/scripts/bambu-sync.sh`
+- Create a LaunchAgent plist file
+- Load the job to run every 15 minutes (900 seconds)
+- Set up proper logging at `~/Library/Logs/bambu-timelapse.log`
+
+**Managing the LaunchAgent:**
+```bash
+# Check if the job is loaded
+launchctl list | grep bambu-timelapse
+
+# Unload the job          # Main sync script
+├── create-launchd-userjob.sh  # macOS LaunchAgent setup script
+├── README.md                  # This documentation
+└── LICENSE          
+# Reload the job
+launchctl load ~/Library/LaunchAgents/com.${USER}.bambu-timelapse.plist
+
+# View logs
+tail -f ~/Library/Logs/bambu-timelapse.log
 ```
 
 ## Configuration Options
