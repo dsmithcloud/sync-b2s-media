@@ -14,7 +14,7 @@ lftp -u bblp,$ACCESS_CODE -e \
   "set ssl:verify-certificate no; \
    set net:max-retries 2; \
    set net:timeout 20; \
-   mirror --only-newer --verbose \"${REMOTE_DIR}/ipcam\" \"${IPCAM_LOCAL_DIR}\"; \
+   mirror --only-newer --verbose \"${REMOTE_DIR}/ipcam\" \"${LOCAL_DIR}/ipcam\"; \
    bye" \
   ftps://$PRINTER_IP:990
 
@@ -23,6 +23,6 @@ lftp -u bblp,$ACCESS_CODE -e \
   "set ssl:verify-certificate no; \
    set net:max-retries 2; \
    set net:timeout 20; \
-   mirror --only-newer --verbose \"${REMOTE_DIR}/timelapse\" \"${TIMELAPSE_LOCAL_DIR}\"; \
+   mirror --only-newer --verbose \"${REMOTE_DIR}/timelapse\" \"${LOCAL_DIR}/timelapse\"; \
    bye" \
   ftps://$PRINTER_IP:990
